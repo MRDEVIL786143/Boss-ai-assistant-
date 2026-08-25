@@ -1,0 +1,6 @@
+{
+  "name": "MyBossAI",
+  "description": "Obedient AI Assistant that controls your phone, writes code, executes tools, and serves you as Boss",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
