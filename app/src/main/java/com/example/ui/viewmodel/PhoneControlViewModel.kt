@@ -3,7 +3,6 @@ package com.example.ui.viewmodel
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.BossApp
 import com.example.engine.PhoneToolManager
 import com.example.service.BossAccessibilityService
@@ -13,7 +12,6 @@ import com.example.service.CapturedNotification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 class PhoneControlViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -86,10 +84,10 @@ class PhoneControlViewModel(application: Application) : AndroidViewModel(applica
         settingsRepo.updateFloatingBubbleEnabled(enable)
         if (enable) {
             BossFloatingOverlayService.start(context)
-            _lastActionResult.value = "Floating Assistant Bubble activated on screen, Boss."
+            _lastActionResult.value = "🌸 Zoya ka floating bubble active ho gaya hai!"
         } else {
             BossFloatingOverlayService.stop(context)
-            _lastActionResult.value = "Floating Bubble disabled, Boss."
+            _lastActionResult.value = "🌸 Zoya floating bubble band ho gaya hai."
         }
     }
 }

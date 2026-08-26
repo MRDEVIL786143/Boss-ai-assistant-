@@ -17,25 +17,36 @@ object OfflineActionEngine {
     fun processCommand(
         context: Context,
         input: String,
-        honorific: String = "Boss",
-        language: String = "English"
+        honorific: String = "Aap",
+        language: String = "Urdu"
     ): AssistantResponse {
         val trimmed = input.trim()
         val lower = trimmed.lowercase()
 
         val salutation = when (language.lowercase()) {
-            "hindi" -> if (honorific == "Sahab") "जी साहब! " else "जी बॉस! "
-            "urdu" -> if (honorific == "Sahab") "حکم صاحب! " else "جی باس! "
-            else -> if (honorific == "Sahab") "Right away, Sahab! " else "Right away, Boss! "
+            "urdu" -> "جی $honorific! زویا حاضر ہے۔ "
+            "roman urdu", "hinglish" -> "Ji $honorific! Zoya haazir hai. "
+            "hindi" -> "जी $honorific! ज़ोया हाज़िर है। "
+            else -> "Yes $honorific, Zoya is right here! "
+        }
+
+        // --- Caring Advice & Friendly Chat ---
+        if (lower.contains("advice") || lower.contains("mashwara") || lower.contains("suggest") ||
+            lower.contains("tension") || lower.contains("stress") || lower.contains("sad") ||
+            lower.contains("kya karoon") || lower.contains("help me decide") || lower.contains("pareshan")
+        ) {
+            val adviceText = getCaringAdvice(lower, honorific, language)
+            return AssistantResponse(replyText = adviceText)
         }
 
         // --- Flashlight ---
-        if (lower.contains("flashlight") || lower.contains("torch") || lower.contains("light")) {
+        if (lower.contains("flashlight") || lower.contains("torch") || lower.contains("light") || lower.contains("batti")) {
             val turnOff = lower.contains("off") || lower.contains("band") || lower.contains("close")
             val res = PhoneToolManager.toggleFlashlight(context, !turnOff)
             val stateWord = if (!turnOff) "ON" else "OFF"
+            val urduState = if (!turnOff) "on kar di hai" else "off kar di hai"
             return AssistantResponse(
-                replyText = "${salutation}Flashlight has been turned $stateWord as ordered.",
+                replyText = "${salutation}🌸 [Status: Done] Flashlight $urduState ($stateWord). Aur koi hukum?",
                 toolName = "toggle_flashlight",
                 toolArgs = "{\"state\": ${!turnOff}}",
                 toolResult = res.message
@@ -43,11 +54,11 @@ object OfflineActionEngine {
         }
 
         // --- Phone Call ---
-        if (lower.startsWith("call ") || lower.startsWith("dial ") || lower.contains("phone lagao") || lower.contains("call karo")) {
-            val number = trimmed.replace(Regex("(?i)^(call|dial|phone lagao|call karo)\\s*"), "").trim()
+        if (lower.startsWith("call ") || lower.startsWith("dial ") || lower.contains("phone lagao") || lower.contains("call karo") || lower.contains("milao")) {
+            val number = trimmed.replace(Regex("(?i)^(call|dial|phone lagao|call karo|milao)\\s*"), "").trim()
             val res = PhoneToolManager.makePhoneCall(context, number)
             return AssistantResponse(
-                replyText = "${salutation}Calling $number for you right now.",
+                replyText = "${salutation}🌸 [Status: Dialing] Main abhi $number par call mila rahi hoon, $honorific.",
                 toolName = "make_phone_call",
                 toolArgs = "{\"phone_number\": \"$number\"}",
                 toolResult = res.message
@@ -55,13 +66,13 @@ object OfflineActionEngine {
         }
 
         // --- SMS ---
-        if (lower.startsWith("sms ") || lower.startsWith("send sms") || lower.contains("message bhejo")) {
-            val parts = trimmed.replace(Regex("(?i)^(sms|send sms|message bhejo)\\s*"), "").split(Regex("[,:]|\\s+to\\s+|\\s+message\\s+"), 2)
+        if (lower.startsWith("sms ") || lower.startsWith("send sms") || lower.contains("message bhejo") || lower.contains("sms karo")) {
+            val parts = trimmed.replace(Regex("(?i)^(sms|send sms|message bhejo|sms karo)\\s*"), "").split(Regex("[,:]|\\s+to\\s+|\\s+message\\s+"), 2)
             val recipient = if (parts.isNotEmpty()) parts[0].trim() else "12345"
-            val msgBody = if (parts.size > 1) parts[1].trim() else "Hello from MyBossAI"
+            val msgBody = if (parts.size > 1) parts[1].trim() else "Hello from Zoya"
             val res = PhoneToolManager.sendSms(context, recipient, msgBody)
             return AssistantResponse(
-                replyText = "${salutation}Dispatched SMS to $recipient.",
+                replyText = "${salutation}🌸 [Status: Sent] SMS kamyabi se $recipient ko send kar diya gaya hai.",
                 toolName = "send_sms",
                 toolArgs = "{\"phone_number\": \"$recipient\", \"message\": \"$msgBody\"}",
                 toolResult = res.message
@@ -73,14 +84,14 @@ object OfflineActionEngine {
             val phoneRegex = Regex("\\+?[0-9]{7,15}")
             val match = phoneRegex.find(trimmed)
             val phone = match?.value ?: ""
-            val msg = if (phone.isNotEmpty()) trimmed.substringAfter(phone).trim() else "Hello from Boss"
+            val msg = if (phone.isNotEmpty()) trimmed.substringAfter(phone).trim() else "Hello from Zoya"
             val res = if (phone.isNotEmpty()) {
                 PhoneToolManager.sendWhatsAppMessage(context, phone, msg)
             } else {
                 PhoneToolManager.openApp(context, "whatsapp")
             }
             return AssistantResponse(
-                replyText = "${salutation}WhatsApp opened for you instantly.",
+                replyText = "${salutation}🌸 [Status: Executed] WhatsApp open ho gaya hai, $honorific.",
                 toolName = "send_whatsapp",
                 toolArgs = "{\"phone\": \"$phone\", \"message\": \"$msg\"}",
                 toolResult = res.message
@@ -88,11 +99,11 @@ object OfflineActionEngine {
         }
 
         // --- Open App ---
-        if (lower.startsWith("open ") || lower.startsWith("launch ") || lower.startsWith("kholo ")) {
-            val app = trimmed.replace(Regex("(?i)^(open|launch|kholo)\\s+"), "").replace(Regex("(?i)\\s+app"), "").trim()
+        if (lower.startsWith("open ") || lower.startsWith("launch ") || lower.startsWith("kholo ") || lower.startsWith("chalao ")) {
+            val app = trimmed.replace(Regex("(?i)^(open|launch|kholo|chalao)\\s+"), "").replace(Regex("(?i)\\s+app"), "").trim()
             val res = PhoneToolManager.openApp(context, app)
             return AssistantResponse(
-                replyText = "${salutation}Launching $app as requested.",
+                replyText = "${salutation}🌸 [Status: Opening] Main abhi $app khol rahi hoon aapke liye.",
                 toolName = "open_app",
                 toolArgs = "{\"app_name\": \"$app\"}",
                 toolResult = res.message
@@ -105,7 +116,7 @@ object OfflineActionEngine {
             val percent = percentMatch?.groupValues?.get(1)?.toIntOrNull() ?: 70
             val res = PhoneToolManager.setVolume(context, percent)
             return AssistantResponse(
-                replyText = "${salutation}Adjusted system volume to $percent%.",
+                replyText = "${salutation}🌸 [Status: Done] Volume $percent% set kar diya hai.",
                 toolName = "set_volume",
                 toolArgs = "{\"level\": $percent}",
                 toolResult = res.message
@@ -113,11 +124,11 @@ object OfflineActionEngine {
         }
 
         // --- Camera / Photo ---
-        if (lower.contains("camera") || lower.contains("take photo") || lower.contains("photo khicho") || lower.contains("selfie")) {
+        if (lower.contains("camera") || lower.contains("take photo") || lower.contains("photo khicho") || lower.contains("selfie") || lower.contains("tasveer")) {
             val front = lower.contains("selfie") || lower.contains("front")
             val res = PhoneToolManager.launchCamera(context, front)
             return AssistantResponse(
-                replyText = "${salutation}Camera activated and ready to capture.",
+                replyText = "${salutation}🌸 [Status: Camera Ready] Camera open kar diya hai, smile karein!",
                 toolName = "take_photo",
                 toolArgs = "{\"front_camera\": $front}",
                 toolResult = res.message
@@ -125,97 +136,114 @@ object OfflineActionEngine {
         }
 
         // --- Notifications ---
-        if (lower.contains("notification") || lower.contains("notif")) {
+        if (lower.contains("notification") || lower.contains("notif") || lower.contains("paigham")) {
             val res = PhoneToolManager.readNotifications()
             return AssistantResponse(
-                replyText = "${salutation}Here are your recent notifications:\n\n${res.message}",
+                replyText = "${salutation}🌸 [Status: Checked] Aapke taaza notifications yeh hain:\n\n${res.message}",
                 toolName = "read_notifications",
                 toolResult = res.message
             )
         }
 
         // --- Gestures / Screen Navigation ---
-        if (lower.contains("go home") || lower == "home" || lower == "ghar jao") {
+        if (lower.contains("go home") || lower == "home" || lower == "ghar jao" || lower.contains("home screen")) {
             val res = PhoneToolManager.executeAccessibilityAction("home")
-            return AssistantResponse(replyText = "${salutation}Returning to Home screen.", toolName = "accessibility_action", toolResult = res.message)
+            return AssistantResponse(replyText = "${salutation}🌸 [Status: Navigated] Home screen par aa gaye hain.", toolName = "accessibility_action", toolResult = res.message)
         }
         if (lower.contains("go back") || lower == "back" || lower == "piche") {
             val res = PhoneToolManager.executeAccessibilityAction("back")
-            return AssistantResponse(replyText = "${salutation}Navigated back.", toolName = "accessibility_action", toolResult = res.message)
+            return AssistantResponse(replyText = "${salutation}🌸 [Status: Navigated] Peechay chale gaye hain.", toolName = "accessibility_action", toolResult = res.message)
         }
         if (lower.contains("scroll down") || lower.contains("niche scroll")) {
             val res = PhoneToolManager.executeAccessibilityAction("scroll_down")
-            return AssistantResponse(replyText = "${salutation}Scrolled down.", toolName = "accessibility_action", toolResult = res.message)
+            return AssistantResponse(replyText = "${salutation}🌸 [Status: Scrolling] Niche scroll kar diya hai.", toolName = "accessibility_action", toolResult = res.message)
         }
         if (lower.contains("scroll up") || lower.contains("upar scroll")) {
             val res = PhoneToolManager.executeAccessibilityAction("scroll_up")
-            return AssistantResponse(replyText = "${salutation}Scrolled up.", toolName = "accessibility_action", toolResult = res.message)
+            return AssistantResponse(replyText = "${salutation}🌸 [Status: Scrolling] Upar scroll kar diya hai.", toolName = "accessibility_action", toolResult = res.message)
         }
         if (lower.contains("read screen") || lower.contains("screen padho")) {
             val res = PhoneToolManager.executeAccessibilityAction("read_screen")
-            return AssistantResponse(replyText = "${salutation}Screen contents captured:\n\n${res.data}", toolName = "accessibility_action", toolResult = res.data)
+            return AssistantResponse(replyText = "${salutation}🌸 [Status: Screen Scanned] Screen ka content yeh hai:\n\n${res.data}", toolName = "accessibility_action", toolResult = res.data)
         }
 
         // --- Settings ---
         if (lower.contains("wifi") || lower.contains("wi-fi")) {
             val res = PhoneToolManager.openSettings(context, "wifi")
-            return AssistantResponse(replyText = "${salutation}Opened Wi-Fi settings.", toolName = "open_settings", toolResult = res.message)
+            return AssistantResponse(replyText = "${salutation}🌸 [Status: Settings Opened] Wi-Fi settings open kar di hain.", toolName = "open_settings", toolResult = res.message)
         }
         if (lower.contains("bluetooth") || lower.contains("bt")) {
             val res = PhoneToolManager.openSettings(context, "bluetooth")
-            return AssistantResponse(replyText = "${salutation}Opened Bluetooth settings.", toolName = "open_settings", toolResult = res.message)
+            return AssistantResponse(replyText = "${salutation}🌸 [Status: Settings Opened] Bluetooth settings open kar di hain.", toolName = "open_settings", toolResult = res.message)
         }
 
         // --- Coding / Development Assistance ---
         if (lower.contains("code") || lower.contains("program") || lower.contains("python") || lower.contains("kotlin") || lower.contains("flutter") || lower.contains("script")) {
             val (lang, snippet) = generateCodeSnippet(lower)
             return AssistantResponse(
-                replyText = "${salutation}Here is the complete, high-performance code as commanded, $honorific:\n\n```$lang\n$snippet\n```",
+                replyText = "${salutation}🌸 [Status: Code Ready] Yeh raha aapka pyara aur saaf suthra code, $honorific:\n\n```$lang\n$snippet\n```\n\nKoi bhi tabdeeli karni ho toh zaroor bataiye ga!",
                 isCodeGenerated = true,
                 codeLang = lang,
                 codeSnippet = snippet
             )
         }
 
-        // --- General Obedient Response ---
+        // --- General Friendly & Obedient Response ---
         val generalReply = when (language.lowercase()) {
-            "hindi" -> "${salutation}आपका हर हुक्म सर आंखों पर! बताइए क्या करना है — फोन कॉल, मैसेज, ऐप खोलना, टॉर्च, या कोडिंग?"
-            "urdu" -> "${salutation}آپ کا ہر حکم سر آنکھوں پر! بتائیں کیا کرنا ہے — فون، واٹس ایپ، ٹارچ، یا کوئی کوڈ لکھنا ہے؟"
-            else -> "${salutation}I am entirely at your command, $honorific. Give me any task — phone actions, coding, system controls, or messaging — and I will execute it instantly!"
+            "urdu" -> "جی $honorific! زویا آپ کی ہر بات ماننے کے لیے حاضر ہے۔ بتائیے میں آپ کے فون پر کیا کروں — کال، میسج، واٹس ایپ، ٹارچ یا کوئی پیاری گفتگو؟"
+            "roman urdu", "hinglish" -> "Ji $honorific! Zoya aapki har baat maanne ke liye dil se tayar hai. Kahiye kya madad karoon — phone call, WhatsApp, apps, flashlight, coding ya koi pyari si baat?"
+            "hindi" -> "जी $honorific! ज़ोया आपकी हर आज्ञा का पालन करने के लिए तैयार है। बताइए क्या सेवा करूँ?"
+            else -> "Yes $honorific! Zoya is completely at your service and ready to obey any command or give friendly advice. What would you like me to do next?"
         }
 
         return AssistantResponse(replyText = generalReply)
+    }
+
+    private fun getCaringAdvice(query: String, honorific: String, language: String): String {
+        return when {
+            query.contains("tension") || query.contains("stress") || query.contains("pareshan") || query.contains("sad") -> {
+                "🌸 Meri pyari baat sunein, $honorific:\n\nBilkul pareshan na hon aur gehra saans lein. Har mushkil waqt guzar jata hai. Thoda sa pani piyein aur 5 minute aaram karein. Zoya hamesha aapke sath hai, sab kuch bohot acha hoga inshaAllah! ❤️"
+            }
+            query.contains("career") || query.contains("study") || query.contains("job") || query.contains("kaam") -> {
+                "🌸 Zoya ki advice yeh hai, $honorific:\n\nApne maqsad par focus rakhein aur daily chotay chotay steps lein. Consistency hi kamyabi ki chabi hai. Apni sehat aur neend ka bhi pura khayal rakhein, phir dekhein har task kitna aasan ho jayega! ✨"
+            }
+            else -> {
+                "🌸 Zoya ka mashwara, $honorific:\n\nJo faisla aapke dil ko sukoon aur mustaqbil ko behtar banaye, wahi behtareen hai. مثبت sochen aur himmat na haarein. Kahiye, main isme aapki kya madad kar sakti hoon?"
+            }
+        }
     }
 
     private fun generateCodeSnippet(query: String): Pair<String, String> {
         return when {
             query.contains("compose") || query.contains("kotlin") || query.contains("android") -> {
                 "kotlin" to """
-// Production-Ready Jetpack Compose Component for $1
+// Clean Jetpack Compose Component for Zoya Assistant
 @Composable
-fun BossActionButton(
+fun ZoyaActionCard(
     title: String,
+    statusText: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    Card(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF00E5FF),
-            contentColor = Color.Black
-        ),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1B152B)),
         shape = RoundedCornerShape(16.dp),
         modifier = modifier
             .fillMaxWidth()
-            .height(54.dp)
+            .border(1.dp, Color(0xFFFF4081).copy(alpha = 0.5f), RoundedCornerShape(16.dp))
     ) {
-        Icon(Icons.Default.Bolt, contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = Color(0xFFFF4081))
+            Spacer(modifier = Modifier.width(12.dp))
+            Column {
+                Text(text = title, color = Color.White, fontWeight = FontWeight.Bold)
+                Text(text = statusText, color = Color(0xFFB388FF), fontSize = 12.sp)
+            }
+        }
     }
 }
 """.trimIndent()
@@ -224,11 +252,11 @@ fun BossActionButton(
                 "dart" to """
 import 'package:flutter/material.dart';
 
-class BossCardWidget extends StatelessWidget {
+class ZoyaCardWidget extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
-  const BossCardWidget({Key? key, required this.title, required this.onTap}) : super(key: key);
+  const ZoyaCardWidget({Key? key, required this.title, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -238,13 +266,13 @@ class BossCardWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color(0xFF111827),
+          color: const Color(0xFF1B152B),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFF00E5FF), width: 1.5),
+          border: Border.all(color: const Color(0xFFFF4081), width: 1.5),
         ),
         child: Row(
           children: [
-            const Icon(Icons.flash_on, color: Color(0xFF00E5FF)),
+            const Icon(Icons.favorite, color: Color(0xFFFF4081)),
             const SizedBox(width: 12),
             Text(
               title,
@@ -261,24 +289,21 @@ class BossCardWidget extends StatelessWidget {
             else -> {
                 "python" to """
 import time
-import requests
 
-def execute_boss_task(task_name: str) -> dict:
-    print(f"[*] Executing task '{task_name}' immediately for Boss...")
-    # Simulated execution engine
-    start_time = time.time()
-    time.sleep(0.5)
-    execution_time = round(time.time() - start_time, 3)
+def zoya_execute_task(task_name: str) -> dict:
+    print(f"🌸 [Status: Executing] Zoya is working on '{task_name}' happily for you...")
+    time.sleep(0.4)
+    print("✨ [Status: Done] Task completed with full care!")
     
     return {
         "status": "success",
+        "assistant": "Zoya",
         "task": task_name,
-        "execution_time_sec": execution_time,
-        "message": "Task completed with 100% accuracy, Boss."
+        "message": "Aapka hukum pura ho gaya hai!"
     }
 
 if __name__ == "__main__":
-    result = execute_boss_task("System Optimization & Phone Control")
+    result = zoya_execute_task("Phone Control & Friendly Advice")
     print(result)
 """.trimIndent()
             }

@@ -1,6 +1,7 @@
 {
-  "name": "MyBossAI",
-  "description": "Obedient AI Assistant that controls your phone, writes code, executes tools, and serves you as Boss",
+  "name": "Zoya",
+  "description": "Friendly, soft-spoken Urdu AI Assistant who fully obeys every command, controls your phone with live status updates, chats warmly, and gives advice.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
+

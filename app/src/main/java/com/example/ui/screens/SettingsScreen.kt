@@ -33,10 +33,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.service.BossAccessibilityService
 import com.example.service.BossFloatingOverlayService
 import com.example.service.BossNotificationService
-import com.example.ui.theme.BossCyanPrimary
-import com.example.ui.theme.BossDarkBg
-import com.example.ui.theme.BossEmerald
-import com.example.ui.theme.BossGoldSecondary
+import com.example.ui.theme.ZoyaCyanAccent
+import com.example.ui.theme.ZoyaDarkBg
+import com.example.ui.theme.ZoyaEmerald
+import com.example.ui.theme.ZoyaLavender
+import com.example.ui.theme.ZoyaRoseGlow
+import com.example.ui.theme.ZoyaRosePrimary
 import com.example.ui.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +58,7 @@ fun SettingsScreen(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { grants ->
         val grantedCount = grants.values.count { it }
-        Toast.makeText(context, "$grantedCount permissions updated, Boss!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "$grantedCount permissions updated for Zoya!", Toast.LENGTH_SHORT).show()
     }
 
     Scaffold(
@@ -67,20 +69,20 @@ fun SettingsScreen(
                         Icon(
                             imageVector = Icons.Default.Tune,
                             contentDescription = null,
-                            tint = BossCyanPrimary
+                            tint = ZoyaRosePrimary
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Settings & AI Architecture",
+                            text = "Zoya Settings & Persona",
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF0F1523))
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF140F22))
             )
         },
-        containerColor = BossDarkBg,
+        containerColor = ZoyaDarkBg,
         modifier = modifier
     ) { padding ->
         LazyColumn(
@@ -93,17 +95,17 @@ fun SettingsScreen(
         ) {
             // AI Model & API Configuration Card
             item {
-                SectionHeader("AI BRAIN & API CONFIGURATION")
+                SectionHeader("ZOYA AI BRAIN & API CONFIGURATION")
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF131A2A)),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1B142C)),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, Color(0xFF223049), RoundedCornerShape(16.dp))
+                        .border(1.dp, Color(0xFF342352), RoundedCornerShape(16.dp))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Text(
-                            text = "OpenAI-Compatible API Key",
+                            text = "OpenAI-Compatible API Key (Optional)",
                             color = Color.White,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold
@@ -114,10 +116,10 @@ fun SettingsScreen(
                                 apiKeyInput = it
                                 viewModel.setApiKey(it)
                             },
-                            placeholder = { Text("sk-...", color = Color(0xFF6B7280)) },
+                            placeholder = { Text("sk-...", color = Color(0xFF8B82A0)) },
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFF162032),
-                                unfocusedContainerColor = Color(0xFF162032),
+                                focusedContainerColor = Color(0xFF241A3B),
+                                unfocusedContainerColor = Color(0xFF241A3B),
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White
                             ),
@@ -127,8 +129,8 @@ fun SettingsScreen(
                                 .testTag("api_key_input")
                         )
                         Text(
-                            text = "Leave empty to use the built-in fast offline action engine without internet.",
-                            color = Color(0xFF9CA3AF),
+                            text = "Leave empty to use Zoya's built-in lightning-fast offline Urdu action engine without internet.",
+                            color = Color(0xFFB8B0CC),
                             fontSize = 11.sp
                         )
 
@@ -147,8 +149,8 @@ fun SettingsScreen(
                                 viewModel.setBaseUrl(it)
                             },
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFF162032),
-                                unfocusedContainerColor = Color(0xFF162032),
+                                focusedContainerColor = Color(0xFF241A3B),
+                                unfocusedContainerColor = Color(0xFF241A3B),
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White
                             ),
@@ -193,8 +195,8 @@ fun SettingsScreen(
                                 viewModel.setModelName(it)
                             },
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFF162032),
-                                unfocusedContainerColor = Color(0xFF162032),
+                                focusedContainerColor = Color(0xFF241A3B),
+                                unfocusedContainerColor = Color(0xFF241A3B),
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White
                             ),
@@ -207,28 +209,28 @@ fun SettingsScreen(
 
             // Honorific & Persona Customization
             item {
-                SectionHeader("HONORIFIC & LANGUAGE")
+                SectionHeader("ZOYA'S ADDRESS & LANGUAGE")
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF131A2A)),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1B142C)),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, Color(0xFF223049), RoundedCornerShape(16.dp))
+                        .border(1.dp, Color(0xFF342352), RoundedCornerShape(16.dp))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Text(
-                            text = "Address User As:",
+                            text = "Address You As:",
                             color = Color.White,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold
                         )
-                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             HonorificChoiceChip(
-                                label = "Boss",
-                                isSelected = settings.honorific == "Boss",
+                                label = "Aap",
+                                isSelected = settings.honorific == "Aap",
                                 modifier = Modifier.weight(1f)
                             ) {
-                                viewModel.setHonorific("Boss")
+                                viewModel.setHonorific("Aap")
                             }
                             HonorificChoiceChip(
                                 label = "Sahab",
@@ -237,9 +239,23 @@ fun SettingsScreen(
                             ) {
                                 viewModel.setHonorific("Sahab")
                             }
+                            HonorificChoiceChip(
+                                label = "Janab",
+                                isSelected = settings.honorific == "Janab",
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                viewModel.setHonorific("Janab")
+                            }
+                            HonorificChoiceChip(
+                                label = "Boss",
+                                isSelected = settings.honorific == "Boss",
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                viewModel.setHonorific("Boss")
+                            }
                         }
 
-                        HorizontalDivider(color = Color(0xFF202C40))
+                        HorizontalDivider(color = Color(0xFF2E2048))
 
                         Text(
                             text = "Language Response Mode:",
@@ -248,13 +264,13 @@ fun SettingsScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            LanguageChoiceChip("English", settings.language == "English") { viewModel.setLanguage("English") }
+                            LanguageChoiceChip("Urdu (اردو)", settings.language == "Urdu") { viewModel.setLanguage("Urdu") }
+                            LanguageChoiceChip("Roman Urdu", settings.language == "Roman Urdu") { viewModel.setLanguage("Roman Urdu") }
                             LanguageChoiceChip("Hindi", settings.language == "Hindi") { viewModel.setLanguage("Hindi") }
-                            LanguageChoiceChip("Urdu", settings.language == "Urdu") { viewModel.setLanguage("Urdu") }
-                            LanguageChoiceChip("Hinglish", settings.language == "Hinglish") { viewModel.setLanguage("Hinglish") }
+                            LanguageChoiceChip("English", settings.language == "English") { viewModel.setLanguage("English") }
                         }
 
-                        HorizontalDivider(color = Color(0xFF202C40))
+                        HorizontalDivider(color = Color(0xFF2E2048))
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -263,12 +279,12 @@ fun SettingsScreen(
                         ) {
                             Column {
                                 Text("Voice Text-To-Speech (TTS)", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                                Text("Read AI replies aloud automatically", color = Color(0xFF9CA3AF), fontSize = 11.sp)
+                                Text("Read Zoya's replies aloud with soft Urdu voice", color = Color(0xFFB8B0CC), fontSize = 11.sp)
                             }
                             Switch(
                                 checked = settings.ttsEnabled,
                                 onCheckedChange = { viewModel.setTtsEnabled(it) },
-                                colors = SwitchDefaults.colors(checkedThumbColor = Color.Black, checkedTrackColor = BossCyanPrimary)
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = ZoyaRosePrimary)
                             )
                         }
                     }
@@ -277,19 +293,19 @@ fun SettingsScreen(
 
             // System Permissions Hub
             item {
-                SectionHeader("PHONE PERMISSIONS & SERVICE INTEGRATIONS")
+                SectionHeader("PHONE PERMISSIONS & SERVICES")
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF131A2A)),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1B142C)),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, Color(0xFF223049), RoundedCornerShape(16.dp))
+                        .border(1.dp, Color(0xFF342352), RoundedCornerShape(16.dp))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         PermissionTile(
                             icon = Icons.Default.Accessibility,
                             title = "Accessibility Service",
-                            desc = "Required to tap buttons, scroll screens, and type text",
+                            desc = "Allows Zoya to tap buttons, scroll screens, and type text",
                             isGranted = BossAccessibilityService.isServiceRunning,
                             onClick = {
                                 val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
@@ -302,7 +318,7 @@ fun SettingsScreen(
                         PermissionTile(
                             icon = Icons.Default.Layers,
                             title = "Draw Over Other Apps (Overlay)",
-                            desc = "Required for Floating Assistant Bubble",
+                            desc = "Required for Floating Zoya Bubble on any screen",
                             isGranted = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context),
                             onClick = {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -317,7 +333,7 @@ fun SettingsScreen(
                         PermissionTile(
                             icon = Icons.Default.NotificationsActive,
                             title = "Notification Listener",
-                            desc = "Allows AI to read and summarize incoming notifications",
+                            desc = "Allows Zoya to read and summarize incoming notifications",
                             isGranted = BossNotificationService.isServiceRunning,
                             onClick = {
                                 val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).apply {
@@ -329,7 +345,7 @@ fun SettingsScreen(
 
                         PermissionTile(
                             icon = Icons.Default.Mic,
-                            title = "Microphone & Telephony Permissions",
+                            title = "Microphone & Phone Permissions",
                             desc = "Voice input, Phone calling, and SMS actions",
                             isGranted = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED,
                             onClick = {
@@ -349,26 +365,26 @@ fun SettingsScreen(
 
             // APK Installation & Setup Guide
             item {
-                SectionHeader("APK BUILD & INSTALLATION GUIDE")
+                SectionHeader("APK BUILD & USAGE GUIDE")
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF101726)),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF171026)),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, BossCyanPrimary.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
+                        .border(1.dp, ZoyaRosePrimary.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Download, contentDescription = null, tint = BossCyanPrimary)
+                            Icon(Icons.Default.Download, contentDescription = null, tint = ZoyaRoseGlow)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("How to Install & Grant Full Power", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Text("How to Use Zoya at Maximum Power", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                         }
                         Text(
                             text = "1. Export project or build APK directly from the top menu.\n" +
                                    "2. Install the APK on your Android device.\n" +
-                                   "3. Go to Android Settings > Accessibility > Downloaded Apps > Enable 'MyBossAI'.\n" +
-                                   "4. Grant 'Display over other apps' to summon Boss AI over any app.\n" +
-                                   "5. Enter your OpenAI or Groq API Key above, or simply use offline speech commands!",
+                                   "3. Go to Android Settings > Accessibility > Downloaded Apps > Enable 'Zoya'.\n" +
+                                   "4. Grant 'Display over other apps' to summon Zoya's floating bubble anywhere.\n" +
+                                   "5. Chat, ask for advice, or give phone commands in Urdu or English anytime!",
                             color = Color(0xFFD1D5DB),
                             fontSize = 12.sp,
                             lineHeight = 18.sp
@@ -384,8 +400,8 @@ fun SettingsScreen(
 fun PresetChip(label: String, onClick: () -> Unit) {
     AssistChip(
         onClick = onClick,
-        label = { Text(label, fontSize = 11.sp, color = BossCyanPrimary) },
-        colors = AssistChipDefaults.assistChipColors(containerColor = Color(0xFF192438))
+        label = { Text(label, fontSize = 11.sp, color = ZoyaRoseGlow) },
+        colors = AssistChipDefaults.assistChipColors(containerColor = Color(0xFF271A40))
     )
 }
 
@@ -394,15 +410,16 @@ fun HonorificChoiceChip(label: String, isSelected: Boolean, modifier: Modifier =
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) BossCyanPrimary else Color(0xFF162032),
-            contentColor = if (isSelected) Color.Black else Color.White
+            containerColor = if (isSelected) ZoyaRosePrimary else Color(0xFF241A3B),
+            contentColor = if (isSelected) Color.White else Color(0xFFC0B8D4)
         ),
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .height(44.dp)
-            .border(1.dp, if (isSelected) BossCyanPrimary else Color(0xFF283852), RoundedCornerShape(12.dp))
+            .border(1.dp, if (isSelected) ZoyaRoseGlow else Color(0xFF3B2B5C), RoundedCornerShape(12.dp)),
+        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
     ) {
-        Text(label, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+        Text(label, fontWeight = FontWeight.Bold, fontSize = 13.sp)
     }
 }
 
@@ -413,10 +430,10 @@ fun LanguageChoiceChip(label: String, isSelected: Boolean, onClick: () -> Unit) 
         onClick = onClick,
         label = { Text(label, fontSize = 11.sp) },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = BossCyanPrimary,
-            selectedLabelColor = Color.Black,
-            containerColor = Color(0xFF162032),
-            labelColor = Color.White
+            selectedContainerColor = ZoyaRosePrimary,
+            selectedLabelColor = Color.White,
+            containerColor = Color(0xFF241A3B),
+            labelColor = Color(0xFFD0C8E4)
         )
     )
 }
@@ -432,25 +449,25 @@ fun PermissionTile(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF151E2E), RoundedCornerShape(12.dp))
-            .border(1.dp, Color(0xFF223046), RoundedCornerShape(12.dp))
+            .background(Color(0xFF201636), RoundedCornerShape(12.dp))
+            .border(1.dp, Color(0xFF382656), RoundedCornerShape(12.dp))
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-            Icon(imageVector = icon, contentDescription = null, tint = BossCyanPrimary, modifier = Modifier.size(24.dp))
+            Icon(imageVector = icon, contentDescription = null, tint = ZoyaRosePrimary, modifier = Modifier.size(24.dp))
             Spacer(modifier = Modifier.width(10.dp))
             Column {
                 Text(text = title, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                Text(text = desc, color = Color(0xFF9CA3AF), fontSize = 10.sp)
+                Text(text = desc, color = Color(0xFFB8B0CC), fontSize = 10.sp)
             }
         }
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isGranted) Color(0xFF1C2C40) else BossCyanPrimary,
-                contentColor = if (isGranted) BossEmerald else Color.Black
+                containerColor = if (isGranted) Color(0xFF2C1E48) else ZoyaRosePrimary,
+                contentColor = if (isGranted) ZoyaEmerald else Color.White
             ),
             shape = RoundedCornerShape(8.dp),
             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
@@ -459,3 +476,4 @@ fun PermissionTile(
         }
     }
 }
+

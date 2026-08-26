@@ -3,6 +3,7 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/app_icon_mybossai_1787645545582"
+        android:drawable="@drawable/zoya_avatar_icon_1787661175206"
         android:gravity="center" />
 </layer-list>
+

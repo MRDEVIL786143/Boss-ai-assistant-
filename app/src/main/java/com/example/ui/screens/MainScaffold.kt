@@ -16,8 +16,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.ui.theme.BossCyanPrimary
-import com.example.ui.theme.BossDarkBg
+import com.example.ui.theme.ZoyaDarkBg
+import com.example.ui.theme.ZoyaLavender
+import com.example.ui.theme.ZoyaRosePrimary
 import com.example.ui.viewmodel.ChatViewModel
 import com.example.ui.viewmodel.CodingViewModel
 import com.example.ui.viewmodel.MemoryViewModel
@@ -45,13 +46,13 @@ fun MainScaffold(
     Scaffold(
         bottomBar = {
             NavigationBar(
-                containerColor = Color(0xFF0C121F),
+                containerColor = Color(0xFF130E20),
                 contentColor = Color.White,
                 tonalElevation = 12.dp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
-                    .border(1.dp, Color(0xFF1E2B40), RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                    .border(1.dp, Color(0xFF2E1E46), RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
             ) {
                 BossNavTab.values().forEach { tab ->
                     val isSelected = selectedTab == tab
@@ -62,25 +63,25 @@ fun MainScaffold(
                             Icon(
                                 imageVector = tab.icon,
                                 contentDescription = tab.title,
-                                tint = if (isSelected) BossCyanPrimary else Color(0xFF8E9EB5)
+                                tint = if (isSelected) ZoyaRosePrimary else Color(0xFF9E92B5)
                             )
                         },
                         label = {
                             Text(
                                 text = tab.title,
                                 fontSize = 11.sp,
-                                color = if (isSelected) BossCyanPrimary else Color(0xFF8E9EB5)
+                                color = if (isSelected) ZoyaRosePrimary else Color(0xFF9E92B5)
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = BossCyanPrimary.copy(alpha = 0.15f)
+                            indicatorColor = ZoyaRosePrimary.copy(alpha = 0.2f)
                         ),
                         modifier = Modifier.testTag(tab.tag)
                     )
                 }
             }
         },
-        containerColor = BossDarkBg
+        containerColor = ZoyaDarkBg
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -97,3 +98,4 @@ fun MainScaffold(
         }
     }
 }
+

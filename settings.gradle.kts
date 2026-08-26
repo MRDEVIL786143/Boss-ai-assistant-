@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "MyBossAI"
+rootProject.name = "Zoya"
 
 include(":app")

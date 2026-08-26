@@ -3,14 +3,10 @@ package com.example.ui.screens
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -18,20 +14,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.ui.theme.BossCyanPrimary
-import com.example.ui.theme.BossDarkBg
-import com.example.ui.theme.BossEmerald
-import com.example.ui.theme.BossGoldSecondary
+import com.example.ui.theme.*
 import com.example.ui.viewmodel.PhoneControlViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +53,7 @@ fun PhoneControlScreen(
                         Icon(
                             imageVector = Icons.Default.PhoneAndroid,
                             contentDescription = null,
-                            tint = BossCyanPrimary
+                            tint = ZoyaRosePrimary
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -73,10 +63,10 @@ fun PhoneControlScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF0F1523))
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF140D24))
             )
         },
-        containerColor = BossDarkBg,
+        containerColor = ZoyaDarkBg,
         modifier = modifier
     ) { padding ->
         LazyColumn(
@@ -115,17 +105,17 @@ fun PhoneControlScreen(
             if (lastResult != null) {
                 item {
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF132035)),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF231435)),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .border(1.dp, BossCyanPrimary, RoundedCornerShape(12.dp))
+                            .border(1.dp, ZoyaRosePrimary, RoundedCornerShape(12.dp))
                     ) {
                         Row(
                             modifier = Modifier.padding(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = BossEmerald)
+                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = ZoyaEmerald)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = lastResult ?: "",
@@ -142,9 +132,9 @@ fun PhoneControlScreen(
             item {
                 SectionHeader("HARDWARE QUICK CONTROLS")
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF131A2A)),
+                    colors = CardDefaults.cardColors(containerColor = ZoyaCardBg),
                     shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth().border(1.dp, Color(0xFF223049), RoundedCornerShape(16.dp))
+                    modifier = Modifier.fillMaxWidth().border(1.dp, ZoyaBorder, RoundedCornerShape(16.dp))
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         // Flashlight & Camera Row
@@ -202,7 +192,7 @@ fun PhoneControlScreen(
                         // Volume Slider
                         Text(
                             text = "Media Volume: ${volumeLevel.toInt()}%",
-                            color = BossCyanPrimary,
+                            color = ZoyaRosePrimary,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -214,9 +204,9 @@ fun PhoneControlScreen(
                             },
                             valueRange = 0f..100f,
                             colors = SliderDefaults.colors(
-                                thumbColor = BossCyanPrimary,
-                                activeTrackColor = BossCyanPrimary,
-                                inactiveTrackColor = Color(0xFF26354D)
+                                thumbColor = ZoyaRosePrimary,
+                                activeTrackColor = ZoyaRosePrimary,
+                                inactiveTrackColor = Color(0xFF332049)
                             )
                         )
                     }
@@ -230,16 +220,16 @@ fun PhoneControlScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    ActionLauncherButton("📞 Call", BossCyanPrimary, Modifier.weight(1f)) {
+                    ActionLauncherButton("📞 Call", ZoyaRosePrimary, Modifier.weight(1f)) {
                         showCallDialog = true
                     }
-                    ActionLauncherButton("✉️ SMS", BossCyanPrimary, Modifier.weight(1f)) {
+                    ActionLauncherButton("✉️ SMS", ZoyaRosePrimary, Modifier.weight(1f)) {
                         showSmsDialog = true
                     }
-                    ActionLauncherButton("💬 WhatsApp", BossEmerald, Modifier.weight(1f)) {
+                    ActionLauncherButton("💬 WhatsApp", ZoyaEmerald, Modifier.weight(1f)) {
                         showWhatsAppDialog = true
                     }
-                    ActionLauncherButton("📱 Open App", BossGoldSecondary, Modifier.weight(1f)) {
+                    ActionLauncherButton("📱 Open App", ZoyaGoldSecondary, Modifier.weight(1f)) {
                         showAppDialog = true
                     }
                 }
@@ -249,9 +239,9 @@ fun PhoneControlScreen(
             item {
                 SectionHeader("SCREEN AUTOMATION GESTURES")
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF131A2A)),
+                    colors = CardDefaults.cardColors(containerColor = ZoyaCardBg),
                     shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth().border(1.dp, Color(0xFF223049), RoundedCornerShape(16.dp))
+                    modifier = Modifier.fillMaxWidth().border(1.dp, ZoyaBorder, RoundedCornerShape(16.dp))
                 ) {
                     Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -282,7 +272,7 @@ fun PhoneControlScreen(
                 ) {
                     SectionHeader("CAPTURED NOTIFICATIONS")
                     TextButton(onClick = { viewModel.refreshNotifications() }) {
-                        Text("Refresh", color = BossCyanPrimary, fontSize = 12.sp)
+                        Text("Refresh", color = ZoyaRosePrimary, fontSize = 12.sp)
                     }
                 }
             }
@@ -290,8 +280,8 @@ fun PhoneControlScreen(
             if (notifications.isEmpty()) {
                 item {
                     Text(
-                        text = "No captured notifications yet. Ensure MyBossAI Notification Listener is enabled in Settings, Boss.",
-                        color = Color(0xFF6B7280),
+                        text = "No captured notifications yet. Ensure Zoya Notification Listener is enabled in Android Settings.",
+                        color = Color(0xFF8E82A6),
                         fontSize = 12.sp,
                         modifier = Modifier.padding(horizontal = 8.dp)
                     )
@@ -299,15 +289,15 @@ fun PhoneControlScreen(
             } else {
                 items(notifications.take(6)) { notif ->
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF131A2A)),
+                        colors = CardDefaults.cardColors(containerColor = ZoyaCardBg),
                         shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth().border(1.dp, Color(0xFF1F2B3E), RoundedCornerShape(12.dp))
+                        modifier = Modifier.fillMaxWidth().border(1.dp, ZoyaBorder, RoundedCornerShape(12.dp))
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
                                     text = notif.appName,
-                                    color = BossGoldSecondary,
+                                    color = ZoyaGoldSecondary,
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -321,7 +311,7 @@ fun PhoneControlScreen(
                             )
                             Text(
                                 text = notif.text,
-                                color = Color(0xFF9CA3AF),
+                                color = Color(0xFFB5A7C9),
                                 fontSize = 12.sp
                             )
                         }
@@ -341,7 +331,12 @@ fun PhoneControlScreen(
                     value = targetNumber,
                     onValueChange = { targetNumber = it },
                     placeholder = { Text("Enter phone number...") },
-                    colors = TextFieldDefaults.colors(focusedContainerColor = Color(0xFF162032), unfocusedContainerColor = Color(0xFF162032), focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFF22153B),
+                        unfocusedContainerColor = Color(0xFF22153B),
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White
+                    )
                 )
             },
             confirmButton = {
@@ -352,13 +347,13 @@ fun PhoneControlScreen(
                             showCallDialog = false
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = BossCyanPrimary, contentColor = Color.Black)
+                    colors = ButtonDefaults.buttonColors(containerColor = ZoyaRosePrimary, contentColor = Color.White)
                 ) { Text("Call Now") }
             },
             dismissButton = {
                 TextButton(onClick = { showCallDialog = false }) { Text("Cancel", color = Color.Gray) }
             },
-            containerColor = Color(0xFF111827)
+            containerColor = Color(0xFF191029)
         )
     }
 
@@ -372,13 +367,23 @@ fun PhoneControlScreen(
                         value = targetNumber,
                         onValueChange = { targetNumber = it },
                         placeholder = { Text("Recipient number...") },
-                        colors = TextFieldDefaults.colors(focusedContainerColor = Color(0xFF162032), unfocusedContainerColor = Color(0xFF162032), focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFF22153B),
+                            unfocusedContainerColor = Color(0xFF22153B),
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        )
                     )
                     TextField(
                         value = targetMessage,
                         onValueChange = { targetMessage = it },
                         placeholder = { Text("Message text...") },
-                        colors = TextFieldDefaults.colors(focusedContainerColor = Color(0xFF162032), unfocusedContainerColor = Color(0xFF162032), focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFF22153B),
+                            unfocusedContainerColor = Color(0xFF22153B),
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        )
                     )
                 }
             },
@@ -390,13 +395,13 @@ fun PhoneControlScreen(
                             showSmsDialog = false
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = BossCyanPrimary, contentColor = Color.Black)
+                    colors = ButtonDefaults.buttonColors(containerColor = ZoyaRosePrimary, contentColor = Color.White)
                 ) { Text("Send SMS") }
             },
             dismissButton = {
                 TextButton(onClick = { showSmsDialog = false }) { Text("Cancel", color = Color.Gray) }
             },
-            containerColor = Color(0xFF111827)
+            containerColor = Color(0xFF191029)
         )
     }
 
@@ -410,13 +415,23 @@ fun PhoneControlScreen(
                         value = targetNumber,
                         onValueChange = { targetNumber = it },
                         placeholder = { Text("Phone number with country code...") },
-                        colors = TextFieldDefaults.colors(focusedContainerColor = Color(0xFF162032), unfocusedContainerColor = Color(0xFF162032), focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFF22153B),
+                            unfocusedContainerColor = Color(0xFF22153B),
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        )
                     )
                     TextField(
                         value = targetMessage,
                         onValueChange = { targetMessage = it },
                         placeholder = { Text("Message text...") },
-                        colors = TextFieldDefaults.colors(focusedContainerColor = Color(0xFF162032), unfocusedContainerColor = Color(0xFF162032), focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFF22153B),
+                            unfocusedContainerColor = Color(0xFF22153B),
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        )
                     )
                 }
             },
@@ -426,13 +441,13 @@ fun PhoneControlScreen(
                         viewModel.sendWhatsApp(targetNumber, targetMessage)
                         showWhatsAppDialog = false
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = BossEmerald, contentColor = Color.Black)
+                    colors = ButtonDefaults.buttonColors(containerColor = ZoyaEmerald, contentColor = Color.Black)
                 ) { Text("Send WhatsApp") }
             },
             dismissButton = {
                 TextButton(onClick = { showWhatsAppDialog = false }) { Text("Cancel", color = Color.Gray) }
             },
-            containerColor = Color(0xFF111827)
+            containerColor = Color(0xFF191029)
         )
     }
 
@@ -445,7 +460,12 @@ fun PhoneControlScreen(
                     value = targetAppName,
                     onValueChange = { targetAppName = it },
                     placeholder = { Text("e.g. YouTube, Chrome, Spotify, Maps...") },
-                    colors = TextFieldDefaults.colors(focusedContainerColor = Color(0xFF162032), unfocusedContainerColor = Color(0xFF162032), focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFF22153B),
+                        unfocusedContainerColor = Color(0xFF22153B),
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White
+                    )
                 )
             },
             confirmButton = {
@@ -456,13 +476,13 @@ fun PhoneControlScreen(
                             showAppDialog = false
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = BossGoldSecondary, contentColor = Color.Black)
+                    colors = ButtonDefaults.buttonColors(containerColor = ZoyaGoldSecondary, contentColor = Color.Black)
                 ) { Text("Launch") }
             },
             dismissButton = {
                 TextButton(onClick = { showAppDialog = false }) { Text("Cancel", color = Color.Gray) }
             },
-            containerColor = Color(0xFF111827)
+            containerColor = Color(0xFF191029)
         )
     }
 }
@@ -475,11 +495,11 @@ fun ServiceStatusBanner(
     onToggleFloatingBubble: (Boolean) -> Unit
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF121B2D)),
+        colors = CardDefaults.cardColors(containerColor = ZoyaCardBg),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, Color(0xFF263750), RoundedCornerShape(16.dp))
+            .border(1.dp, ZoyaBorder, RoundedCornerShape(16.dp))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -496,15 +516,15 @@ fun ServiceStatusBanner(
                     )
                     Text(
                         text = if (isAccessibilityActive) "Active - Taps & Gestures Armed" else "Disabled - Enable to control screen",
-                        color = if (isAccessibilityActive) BossEmerald else Color(0xFFFFAA00),
+                        color = if (isAccessibilityActive) ZoyaEmerald else Color(0xFFFFAA00),
                         fontSize = 11.sp
                     )
                 }
                 Button(
                     onClick = onOpenAccessibilitySettings,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isAccessibilityActive) Color(0xFF1E2D44) else BossCyanPrimary,
-                        contentColor = if (isAccessibilityActive) Color.White else Color.Black
+                        containerColor = if (isAccessibilityActive) Color(0xFF2E1C48) else ZoyaRosePrimary,
+                        contentColor = Color.White
                     ),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
@@ -513,7 +533,7 @@ fun ServiceStatusBanner(
                 }
             }
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp), color = Color(0xFF202C40))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp), color = Color(0xFF2E1C48))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -522,14 +542,14 @@ fun ServiceStatusBanner(
             ) {
                 Column {
                     Text(
-                        text = "Floating Assistant Bubble",
+                        text = "Persistent Floating Bubble",
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Access Boss AI while using any other app",
-                        color = Color(0xFF9CA3AF),
+                        text = "Zoya stays on screen & runs commands in background",
+                        color = Color(0xFFB5A7C9),
                         fontSize = 11.sp
                     )
                 }
@@ -537,10 +557,10 @@ fun ServiceStatusBanner(
                     checked = isOverlayActive,
                     onCheckedChange = onToggleFloatingBubble,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color.Black,
-                        checkedTrackColor = BossCyanPrimary,
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = ZoyaRosePrimary,
                         uncheckedThumbColor = Color.Gray,
-                        uncheckedTrackColor = Color(0xFF1E293B)
+                        uncheckedTrackColor = Color(0xFF26193E)
                     )
                 )
             }
@@ -560,12 +580,12 @@ fun ControlTile(
     Card(
         onClick = onClick,
         colors = CardDefaults.cardColors(
-            containerColor = if (isActive) Color(0xFF1A334B) else Color(0xFF182235)
+            containerColor = if (isActive) Color(0xFF381A45) else Color(0xFF1E1430)
         ),
         shape = RoundedCornerShape(14.dp),
         modifier = modifier.border(
             1.dp,
-            if (isActive) BossCyanPrimary else Color(0xFF283852),
+            if (isActive) ZoyaRosePrimary else Color(0xFF35224D),
             RoundedCornerShape(14.dp)
         )
     ) {
@@ -576,7 +596,7 @@ fun ControlTile(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isActive) BossCyanPrimary else Color.White,
+                tint = if (isActive) ZoyaRosePrimary else Color.White,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -588,7 +608,7 @@ fun ControlTile(
             )
             Text(
                 text = subtitle,
-                color = if (isActive) BossCyanPrimary else Color(0xFF9CA3AF),
+                color = if (isActive) ZoyaRosePrimary else Color(0xFF8E82A6),
                 fontSize = 10.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -606,7 +626,7 @@ fun ActionLauncherButton(
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF141C2B),
+            containerColor = Color(0xFF201535),
             contentColor = Color.White
         ),
         shape = RoundedCornerShape(12.dp),
@@ -628,7 +648,7 @@ fun GestureChip(
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF182236),
+            containerColor = Color(0xFF201535),
             contentColor = Color.White
         ),
         shape = RoundedCornerShape(10.dp),
@@ -643,7 +663,7 @@ fun GestureChip(
 fun SectionHeader(title: String) {
     Text(
         text = title,
-        color = BossCyanPrimary,
+        color = ZoyaRosePrimary,
         fontSize = 11.sp,
         fontWeight = FontWeight.Bold,
         letterSpacing = 1.sp,

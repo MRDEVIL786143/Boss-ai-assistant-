@@ -10,8 +10,8 @@ data class BossSettings(
     val apiKey: String = "",
     val baseUrl: String = "https://api.openai.com/v1",
     val modelName: String = "gpt-4o-mini",
-    val honorific: String = "Boss", // "Boss" or "Sahab"
-    val language: String = "English", // "English", "Hindi", "Urdu", "Hinglish"
+    val honorific: String = "Aap", // "Aap", "Boss", "Sahab", "Jaan", "Dost"
+    val language: String = "Urdu", // "Urdu", "Roman Urdu", "English", "Hindi"
     val ttsEnabled: Boolean = true,
     val floatingBubbleEnabled: Boolean = false,
     val wakeWordEnabled: Boolean = false,
@@ -20,7 +20,7 @@ data class BossSettings(
 
 class SettingsRepository(context: Context) {
     private val prefs: SharedPreferences =
-        context.getSharedPreferences("mybossai_settings", Context.MODE_PRIVATE)
+        context.getSharedPreferences("zoya_settings", Context.MODE_PRIVATE)
 
     private val _settings = MutableStateFlow(loadSettings())
     val settings: StateFlow<BossSettings> = _settings.asStateFlow()
@@ -30,8 +30,8 @@ class SettingsRepository(context: Context) {
             apiKey = prefs.getString("api_key", "") ?: "",
             baseUrl = prefs.getString("base_url", "https://api.openai.com/v1") ?: "https://api.openai.com/v1",
             modelName = prefs.getString("model_name", "gpt-4o-mini") ?: "gpt-4o-mini",
-            honorific = prefs.getString("honorific", "Boss") ?: "Boss",
-            language = prefs.getString("language", "English") ?: "English",
+            honorific = prefs.getString("honorific", "Aap") ?: "Aap",
+            language = prefs.getString("language", "Urdu") ?: "Urdu",
             ttsEnabled = prefs.getBoolean("tts_enabled", true),
             floatingBubbleEnabled = prefs.getBoolean("floating_bubble_enabled", false),
             wakeWordEnabled = prefs.getBoolean("wake_word_enabled", false),
@@ -84,3 +84,4 @@ class SettingsRepository(context: Context) {
         _settings.value = _settings.value.copy(autoExecuteTools = enabled)
     }
 }
+

@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">MyBossAI</string>
-    <string name="accessibility_service_description">Allows MyBossAI to assist you by tapping buttons, typing text, scrolling, and controlling actions when requested.</string>
+    <string name="app_name">Zoya</string>
+    <string name="accessibility_service_description">Allows Zoya to assist you with phone tasks, tapping buttons, typing text, scrolling, and controlling actions when requested.</string>
 </resources>
