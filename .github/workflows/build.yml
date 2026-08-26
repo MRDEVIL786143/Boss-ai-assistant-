@@ -1,0 +1,62 @@
+name: Build Android App
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: 11
+        distribution: 'temurin'
+        cache: gradle
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Build with Gradle
+      run: ./gradlew build
+    
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
+    
+    - name: Upload APK to artifacts
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: Boss-AI-Assistant-release-apk
+        path: app/build/outputs/apk/release/
+        retention-days: 30
+    
+    - name: Run Tests
+      run: ./gradlew test
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: 11
+        distribution: 'temurin'
+        cache: gradle
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Run Lint
+      run: ./gradlew lint
